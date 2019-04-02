@@ -1,0 +1,32 @@
+body, table, button, select, input {
+    font-size: 16px;
+    font-family: 宋体;
+}
+
+[v-cloak] {
+    display:none;
+}
+tr.printonly {
+    display:none;
+}
+@media print {
+    @page {
+            size: 210mm 297mm;  /* or size: 794px 1123px;   */
+            size: 297mm 420mm;  /* or size: 1123px 1588px;  */
+    }
+    div.notprint {
+        display:none;
+    }
+    tr.printonly {
+        display:table-row;
+    }
+    div.print-repeat {
+
+    }
+    #app {
+        width:210mm;
+    }
+}
+
+tr.break_before { page-break-before: always; }
+tr.break_after { page-break-after: always; }

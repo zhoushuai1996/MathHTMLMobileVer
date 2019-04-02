@@ -1,0 +1,364 @@
+<!DOCTYPE html>
+<html lang="zh-CN" >
+
+<head>
+	<meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+
+
+	<title>&nbsp;</title>
+    <link rel="stylesheet" href="bootstrap/css/bootstrap.min.css">
+    <link rel="stylesheet" href="js/index.css">
+    <script src="js/vue.min.js"></script>
+</head>
+
+<body>			
+<div style="position: fixed;top: 0;left: 0;right: 0;height: 40px;z-index: 33;background: #f6f9f9;display: flex;align-items: center;">
+	<img onclick="imgback()" src="img/back.png" style="width: 28px;height: 28px;margin-left: 10px;">
+	<div style="text-align: center;margin-left: 33%;">题目设置</div>
+</div>
+    <div id="app" class="container" v-cloak>
+            <div>
+                    <div class="panel panel-primary">
+                        <div class="panel-heading">
+                            <h4>详细题型设置</h4>
+                        </div>
+                        <div class="panel-body">
+                            <form class="form-horizontal">
+							        <div class="form-group">
+                                    <label class="col-sm-2 control-label">快速设置：</label>
+                                    <div class="input-group col-sm-4">
+                                        <select name="level" class="form-control" >
+                                            <option value="">【快捷题型选择】</option>
+											<option value="1">【双运算项】【十以内】【加法专练】【难度04】</option>
+											<option value="2">【双运算项】【十以内】【减法专练】【难度04】</option>
+											<option value="3">【双运算项】【十以内】【加减混合】【难度08】</option>
+											<option value="4">【双运算项】【十以内】【乘法专练】【难度12】</option>
+											<option value="5">【双运算项】【十以内】【除法专练】【难度12】</option>
+											<option value="6">【双运算项】【十以内】【乘除混合】【难度16】</option>
+											<option value="7">【双运算项】【十以内】【四则混合】【难度20】</option>
+                                            <option value="" disabled></option>
+											<option value="8">【双运算项】【百以内】【加法专练】【难度12】</option>
+											<option value="9">【双运算项】【百以内】【减法专练】【难度12】</option>
+											<option value="10">【双运算项】【百以内】【加减混合】【难度16】</option>
+											<option value="11">【双运算项】【百以内】【乘法专练】【难度20】</option>
+											<option value="12">【双运算项】【百以内】【除法专练】【难度20】</option>
+											<option value="13">【双运算项】【百以内】【乘除混合】【难度24】</option>
+											<option value="14">【双运算项】【百以内】【四则混合】【难度28】</option>
+                                            <option value="" disabled></option>
+											<option value="15">【双运算项】【千以内】【加法专练】【难度16】</option>
+											<option value="16">【双运算项】【千以内】【减法专练】【难度16】</option>
+											<option value="17">【双运算项】【千以内】【加减混合】【难度20】</option>
+                                            <option value="" disabled></option>
+											<option value="18">【三运算项】【十以内】【加法专练】【难度20】</option>
+											<option value="19">【三运算项】【十以内】【减法专练】【难度20】</option>
+											<option value="20">【三运算项】【十以内】【加减混合】【难度24】</option>
+											<option value="21">【三运算项】【十以内】【乘法专练】【难度36】</option>
+											<option value="22">【三运算项】【十以内】【除法专练】【难度36】</option>
+											<option value="23">【三运算项】【十以内】【乘除混合】【难度44】</option>
+											<option value="24">【三运算项】【十以内】【四则混合】【难度52】</option>
+                                            <option value="" disabled></option>
+											<option value="25">【三运算项】【百以内】【加法专练】【难度24】</option>
+											<option value="26">【三运算项】【百以内】【减法专练】【难度24】</option>
+											<option value="27">【三运算项】【百以内】【加减混合】【难度28】</option>
+											<option value="28">【三运算项】【百以内】【乘法专练】【难度99】</option>
+											<option value="29">【三运算项】【百以内】【除法专练】【难度60】</option>
+											<option value="30">【三运算项】【百以内】【乘除混合】【难度80】</option>
+											<option value="31">【三运算项】【百以内】【四则混合】【难度84】</option>
+                                            <option value="" disabled></option>
+											<option value="32">【三运算项】【千以内】【加法专练】【难度52】</option>
+											<option value="33">【三运算项】【千以内】【减法专练】【难度52】</option>
+											<option value="34">【三运算项】【千以内】【加减混合】【难度56】</option>
+                                        </select>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label">包含题型：</label>
+                                    <div class="input-group col-sm-8">
+                                        <div class="btn-group" data-toggle="buttons">
+                                            <label v-bind:class="{ active: isadd, 'btn-danger': isadd, 'btn-default': !isadd}"
+                                                class="btn" v-on:click="isadd=!isadd">
+                                                <span v-bind:class="{ 'glyphicon-ok': isadd, 'glyphicon-unchecked': ! isadd }"
+                                                    class="glyphicon" aria-hidden="true"></span>
+                                                <input type="checkbox" autocomplete="off" v-model="isadd"> ＋加
+                                            </label>
+                                            <label v-bind:class="{ active: issub, 'btn-warning': issub, 'btn-default': !issub }"
+                                                class="btn" v-on:click="issub=!issub">
+                                                <span v-bind:class="{ 'glyphicon-ok': issub, 'glyphicon-unchecked': ! issub }"
+                                                    class="glyphicon" aria-hidden="true"></span>
+                                                <input type="checkbox" autocomplete="off" v-model="issub"> －减
+                                            </label>
+                                            <label v-bind:class="{ active: ismul, 'btn-primary': ismul, 'btn-default': !ismul }"
+                                                class="btn" v-on:click="ismul=!ismul">
+                                                <span v-bind:class="{ 'glyphicon-ok': ismul, 'glyphicon-unchecked': ! ismul }"
+                                                    class="glyphicon" aria-hidden="true"></span>
+                                                <input type="checkbox" autocomplete="off" v-model="ismul"> &times;乘
+                                            </label>
+                                            <label v-bind:class="{ active: isdiv, 'btn-success': isdiv, 'btn-default': !isdiv }"
+                                                class="btn" v-on:click="isdiv=!isdiv">
+                                                <span v-bind:class="{ 'glyphicon-ok': isdiv, 'glyphicon-unchecked': ! isdiv }"
+                                                    class="glyphicon" aria-hidden="true"></span>
+                                                <input type="checkbox" autocomplete="off" v-model="isdiv"> &div;除
+                                            </label>
+
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="form-group">
+									<label class="col-sm-2 control-label">运算项个数：</label>
+                                    <div class="input-group col-sm-4">
+										<select name="itemcount" class="form-control col-sm-4 " v-model="itemcount">
+											<option value="2">2</option>
+											<option value="3">3</option>
+											<option value="4">4</option>
+										</select>
+                                </div>
+                                <hr style="margin:8px" />
+                                <!--标签-->
+                                <ul class="nav nav-tabs" role="tablist">
+                                    <li class="active">
+                                        <a href="#tab-op" role="tab" data-toggle="tab">
+                                            <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
+                                            符号</a>
+                                    </li>
+                                    <li v-if="isadd">
+                                        <a href="#tab-add" role="tab" data-toggle="tab">
+                                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                                            加法</a>
+                                    </li>
+                                    <li v-if="issub">
+                                        <a href="#tab-sub" role="tab" data-toggle="tab">
+                                            <span class="glyphicon glyphicon-minus" aria-hidden="true"></span>
+                                            减法</a>
+                                    </li>
+                                    <li v-if="ismul">
+                                        <a href="#tab-mul" role="tab" data-toggle="tab">
+                                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                                            乘法</a>
+                                    </li>
+                                    <li v-if="isdiv">
+                                        <a href="#tab-div" role="tab" data-toggle="tab">
+                                            <span class="glyphicon " aria-hidden="true" style="font-size: 25px;font-weight: bold;line-height: 0px;">&div;</span>
+                                            除法</a>
+                                    </li>
+                                </ul>
+                                <!--标签的内容-->
+                                <div class="tab-content" style="padding:10px;">
+              
+                                    <div class="tab-pane active" id="tab-op">
+                                        <div class="row">
+                                            <div class="col-md-12">
+                                                <div v-if="isadd||issub||ismul||isdiv" class="form-group" v-for="(rg, i) in range_op">
+                                                    <label class="col-sm-3 control-label">运算符#{{i+1}}精确设置：</label>
+                                                    <div class="input-group col-sm-7">
+                                                        <div class="btn-group" data-toggle="buttons">
+                                                            <label v-if="isadd" class="btn " :class="{'btn-default':!rg.add, 'btn-info':rg.add, active: rg.add}" v-on:click="rg.add=!rg.add">
+                                                                <span class="glyphicon" :class="{'glyphicon-unchecked':!rg.add, 'glyphicon-check': rg.add}" aria-hidden="true"></span>
+                                                                <input type="checkbox" v-mode="rg.add" autocomplete="off"> ＋
+                                                            </label>
+                                                            <label v-if="issub" class="btn " :class="{'btn-default':!rg.sub, 'btn-info':rg.sub, active: rg.sub}" v-on:click="rg.sub=!rg.sub">
+                                                                <span class="glyphicon" :class="{'glyphicon-unchecked':!rg.sub, 'glyphicon-check': rg.sub}" aria-hidden="true"></span>
+                                                                <input type="checkbox" v-model="rg.sub" autocomplete="off"> －
+                                                            </label>
+                                                            <label v-if="ismul" class="btn " :class="{'btn-default':!rg.mul, 'btn-info':rg.mul, active: rg.mul}" v-on:click="rg.mul=!rg.mul">
+                                                                <span class="glyphicon" :class="{'glyphicon-unchecked':!rg.mul, 'glyphicon-check': rg.mul}" aria-hidden="true"></span>
+                                                                <input type="checkbox" autocomplete="off"> &times;
+                                                            </label>
+                                                            <label v-if="isdiv" class="btn " :class="{'btn-default':!rg.div, 'btn-info':rg.div, active: rg.div}" v-on:click="rg.div=!rg.div">
+                                                                <span class="glyphicon" :class="{'glyphicon-unchecked':!rg.div, 'glyphicon-check': rg.div}" aria-hidden="true"></span>
+                                                                <input type="checkbox" autocomplete="off"> &div;
+                                                            </label>
+                                                            <label class="btn btn-default" :class="{active: rg.all}" v-on:click="rg.add=rg.sub=rg.mul=rg.div=rg.all=!rg.all">
+                                                                <span class="glyphicon glyphicon-check" aria-hidden="true"></span>
+                                                                <input type="checkbox" autocomplete="off"> 全选
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="input-group col-sm-4">
+                                                        <div class="checkbox form-control" >
+                                                            <label>
+                                                                <input type="checkbox" v-model="diff_operator_adjacent"/> 相邻运算符不相同
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="input-group col-sm-4">
+                                                        <div class="checkbox form-control">
+                                                            <label>
+                                                                <input type="checkbox" v-model="dissimilarity_operator_adjacent" /> 加减不相邻，乘除不相邻
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">生成策略设置：</label>
+                                            <div class="input-group col-sm-4">
+                                                <select class="form-control" v-model="strategy">
+                                                    <option value="random" selected>随机决定</option>
+                                                    <option value="lft">先左后右</option>
+                                                    <option value="rgt">先右后左</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                                <div class="form-group">
+                                                    <label class="col-sm-3 control-label"></label>
+                                                    <div class="input-group col-sm-4">
+                                                        <div class="checkbox form-control">
+                                                            <label>
+                                                                <input type="checkbox" v-model="parentheses.autofix" /> 尽量保证括号括得有意义
+                                                            </label>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-add" v-if="isadd">
+                                        <div class="form-group" v-for="(rg, i) in range_add">
+                                            <label class="col-sm-3 control-label">运算项#{{i+1}}范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="rg.min" title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="rg.max" title="最大值" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">得数范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="result_add.min"
+                                                    title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="result_add.max"
+                                                    title="最大值" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-sub" v-if="issub">
+                                        <div class="form-group" v-for="(rg, i) in range_sub">
+                                            <label class="col-sm-3 control-label">运算项#{{i+1}}范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="rg.min" title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="rg.max" title="最大值" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">得数范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="result_sub.min"
+                                                    title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="result_sub.max"
+                                                    title="最大值" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-mul" v-if="ismul">
+                                        <div class="form-group" v-for="(rg, i) in range_mul">
+                                            <label class="col-sm-3 control-label">运算项#{{i+1}}范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="rg.min" title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="rg.max" title="最大值" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">得数范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="result_mul.min"
+                                                    title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="result_mul.max"
+                                                    title="最大值" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="tab-pane" id="tab-div" v-if="isdiv">
+                                        <div class="form-group" v-for="(rg, i) in range_div">
+                                            <label class="col-sm-3 control-label">运算项#{{i+1}}范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="rg.min" title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="rg.max" title="最大值" />
+                                            </div>
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="col-sm-3 control-label">得数范围：</label>
+                                            <div class="input-group col-sm-4">
+                                                <input type="number" class="form-control" v-model="result_div.min"
+                                                    title="最小值" />
+                                                <div class="input-group-addon">-</div>
+                                                <input type="number" class="form-control" v-model="result_div.max"
+                                                    title="最大值" />
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </form>
+                        </div>
+                        <div class="panel-footer">
+                            <button @click="doGen" class="btn btn-danger" style="font-weight:bold;cursor:hand;">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                                立即生成！
+                            </button>
+                        </div>
+                    </div>
+
+            </div>
+			
+            <div class="alert alert-success" style="text-align:center;">
+                生成题数：{{res.length}}，其中：加法：{{report.addcnt}}，减法：{{report.subcnt}}，乘法：{{report.mulcnt}}，除法：{{report.divcnt}}，异常：{{report.exceptcnt}}
+            </div>
+        </div>
+        <div id="print-part">
+		<table width="100%" border="0" cellpadding="0" cellspacing="0">
+            <tbody>
+                <tr :class="{break_before:p>1}" v-for="p in parseInt(((parseInt(res.length + (cols-0) - 1) / (cols-0)) + (pagerows - 1)) / (pagerows - 0)) ">
+                    <td style="border: 0px none;">
+                        <!-- 小表格是当前页的所有试题 -->
+                        <table :style="{fontFamily:fontfamily, fontSize:fontsize+'px'}" width="100%" class="mytable">
+                            <tr v-for="r in (appendemptyrows ? (pagerows - 0) : Math.min(pagerows, parseInt((res.length - (p - 1) * (pagerows-0) * (cols-0) + (cols - 1)) / (cols-0))))":class="{printonly: r > parseInt((res.length - (p - 1) * (pagerows-0) * (cols-0) + (cols - 1)) / (cols-0))}">
+                                <td :style="{padding:cellSpacing+'px '+cellPadding+'px'}" v-for="c in (cols-0)" >
+                                    <template v-if="r > parseInt((res.length - (p - 1) * (pagerows-0) * (cols-0) + (cols - 1)) / (cols-0))">&nbsp;</template>
+                                    <template v-if="(p-1) * (pagerows-0) * (cols-0) + (r-1) * (cols-0) + (c - 1) < res.length">
+                                        <span>{{formulaToString(res[ (p-1) * (pagerows-0) * (cols-0) + (r-1) * (cols-0) + (c - 1)].item) }}</span>
+                                    </template>
+                                </td>
+                            </tr>
+                        </table>
+                    </td>
+                </tr>
+            </tbody>
+            <tfoot style="display:none;">
+                <tr>
+                    <th :colspan="cols">
+                        <div class="print-repeat">
+                        </div>
+                    </th>
+                </tr>
+            </tfoot>
+        </table>
+		</div>
+    </div>
+	<script src="bootstrap/js/jquery-3.3.1.min.js"></script>
+    <script src="bootstrap/js/bootstrap.min.js"></script>
+    <script src="index.js"></script>
+	<script src="js/FileSaver.js"></script>
+	<script src="js/jquery.wordexport.js"></script>
+	<script type="text/javascript">
+		function imgback() {
+			console.log('backToMain')
+			window.webkit.messageHandlers.imgbackResponse.postMessage("d")
+
+		}
+	</script>
+</body>
+
+</html>
