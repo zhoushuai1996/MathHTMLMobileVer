@@ -20,10 +20,7 @@
 </div>
     <div id="app" class="container" v-cloak>
             <div>
-                    <div class="panel panel-primary" style="margin: 5%">
-                        <div class="panel-heading">
-                            <h4>详细题型设置</h4>
-                        </div>
+                    <div class="panel panel-primary" style="margin-top: 50px">
                         <div class="panel-body">
                             <form class="form-horizontal">
 							        <div class="form-group">
@@ -182,36 +179,6 @@
                                                         <div class="checkbox form-control" >
                                                             <label>
                                                                 <input type="checkbox" v-model="diff_operator_adjacent"/> 相邻运算符不相同
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label"></label>
-                                                    <div class="input-group col-sm-4">
-                                                        <div class="checkbox form-control">
-                                                            <label>
-                                                                <input type="checkbox" v-model="dissimilarity_operator_adjacent" /> 加减不相邻，乘除不相邻
-                                                            </label>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                        <div class="form-group">
-                                            <label class="col-sm-3 control-label">生成策略设置：</label>
-                                            <div class="input-group col-sm-4">
-                                                <select class="form-control" v-model="strategy">
-                                                    <option value="random" selected>随机决定</option>
-                                                    <option value="lft">先左后右</option>
-                                                    <option value="rgt">先右后左</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                                <div class="form-group">
-                                                    <label class="col-sm-3 control-label"></label>
-                                                    <div class="input-group col-sm-4">
-                                                        <div class="checkbox form-control">
-                                                            <label>
-                                                                <input type="checkbox" v-model="parentheses.autofix" /> 尽量保证括号括得有意义
                                                             </label>
                                                         </div>
                                                     </div>
