@@ -19,9 +19,8 @@
 	<div style="text-align: center;margin-left: 33%;">题目设置</div>
 </div>
     <div id="app" class="container" v-cloak>
-            <div>
-                    <div class="panel panel-primary" style="margin-top: 50px">
-                        <div class="panel-body" style="margin:10px">
+            <div class="panel panel-primary" style="margin-top: 50px">
+                        <div class="panel-body">
                             <form class="form-horizontal">
 								<div class="form-group">
                                             <label class="col-sm-2 control-label">生成数量：</label>
@@ -58,11 +57,9 @@
                                                     class="glyphicon" aria-hidden="true"></span>
                                                 <input type="checkbox" autocomplete="off" v-model="isdiv"> &div;除
                                             </label>
-
                                         </div>
                                     </div>
                                 </div>
-                                <div class="form-group">
 									<label class="col-sm-2 control-label">运算项个数：</label>
                                     <div class="input-group col-sm-4">
 										<select name="itemcount" class="form-control col-sm-4 " v-model="itemcount">
@@ -70,10 +67,10 @@
 											<option value="3">3</option>
 											<option value="4">4</option>
 										</select>
-                                </div>
+									</div>
                                 <hr style="margin:8px" />
                                 <!--标签-->
-                                <ul class="nav nav-tabs" role="tablist">
+                                <ul class="nav nav-justified" role="tablist">
                                     <li class="active">
                                         <a href="#tab-op" role="tab" data-toggle="tab">
                                             <span class="glyphicon glyphicon-asterisk" aria-hidden="true"></span>
@@ -236,14 +233,12 @@
                                 立即生成！
                             </button>
                         </div>
-                    </div>
-
             </div>
 			
             <div class="alert alert-success" style="text-align:center;">
                 生成题数：{{res.length}}，其中：加法：{{report.addcnt}}，减法：{{report.subcnt}}，乘法：{{report.mulcnt}}，除法：{{report.divcnt}}，异常：{{report.exceptcnt}}
             </div>
-        </div>
+
         <div id="print-part">
 		<table width="100%" border="0" cellpadding="0" cellspacing="0">
             <tbody>
@@ -274,6 +269,8 @@
         </table>
 		</div>
     </div>
+	
+	
 	<script src="bootstrap/js/jquery-3.3.1.min.js"></script>
     <script src="bootstrap/js/bootstrap.min.js"></script>
     <script src="index.js"></script>
