@@ -146,21 +146,19 @@ var app = new Vue({
 	el: '#app',
 	data: {
 		count: 100,
-		pagerows: 25,
 		cols: 4,
-
-		strategy: 'random',
 		diff_operator_adjacent: false,
-		dissimilarity_operator_adjacent: true,
-
-		isadd: true,
-		issub: true,
-		ismul: true,
-		isdiv: true,
-		rule: '1',
-		whichcond: '',
-		exact_parentheses: false,
+		pagerows: 25,
+		cellPadding: 2,
+		cellSpacing: 5,
+		
 		parentheses: {autofix: true, enabled: false, min: 0, max: 0}, // 是否生成带括号的题
+
+
+		isadd: false,
+		issub: false,
+		ismul: false,
+		isdiv: true,
 
 		itemcount: 0,
 
@@ -183,16 +181,13 @@ var app = new Vue({
 		range_mul: [],
 
 		// 除法
-		defrange_div: [{min: 0, max: 81}, {min: 1, max: 9}],
-		result_div: {min: 2, max: 9},
+		defrange_div: [{min: 4, max: 1000}, {min: 1, max: 100}],
+		result_div: {min: 2, max: 100},
 		range_div: [],
 
 		fontsize: 12,
 		fontfamily: '宋体',
-		cellPadding: 2,
-		cellSpacing: 5,
 		res: [],
-		appendemptyrows: false,
 		report: {
 			total: 0,
 			addcnt: 0, // 加法题数量
@@ -203,7 +198,7 @@ var app = new Vue({
 		}
 	},
 	created: function () {
-		this.itemcount = 2;
+		this.itemcount = 4;
 	},
 	watch: {
 		count: function (val, oldval) {
@@ -221,12 +216,6 @@ var app = new Vue({
 		fontsize: function (val, oldval) {
 			if (val < 8) this.fontsize = 8;
 			if (val > 30) this.fontsize = 30;
-		},
-		cellPadding: function (val, oldval) {
-			if (val < 0) this.cellPadding = 0;
-		},
-		cellSpacing: function (val, oldval) {
-			if (val < 2) this.cellSpacing = 2;
 		},
 		itemcount: function (val, oldval) {
 			if (val > 2) {
@@ -364,7 +353,7 @@ var app = new Vue({
 			var range = ({'+': this.range_add, '-': this.range_sub, '*': this.range_mul, '/': this.range_div})[op];
 			var result = {'+': this.result_add, '-': this.result_sub, '*': this.result_mul, '/': this.result_div}[op];
 
-			var w = '' === this.whichcond ? randomInt(0, this.itemcount - 1) : this.whichcond - 0; // 已知得数，随机求某一个条件
+ 																														
 			var min = range[0].min, max = range[0].max, limit = [], isexcept = false;
 
 			var arr1, rg1;
@@ -475,8 +464,6 @@ var app = new Vue({
 				r = randomInt(range[0].min, range[0].max, limit);
 			}
 
-			// 已知得数，求条件，且第一个数就是被求的条件? 则将该数使用空白代替！
-			var arr = [('2' == this.rule && 0 == w) ? this.blank(r) : r];
 			for (var i = 1; i < this.itemcount; i++, op = this.op()) {
 
 				for (var j = min; j <= max; j++) {
@@ -568,7 +555,7 @@ var app = new Vue({
 						// 还是修正【被除数】 r 吧？ 并且需要随机模拟除不尽的情况
 						arr[arr.length - 1] = r = res * t + (res ? randomInt(0, t - 1) : 0);
 					}
-					// console.log('r=', r, 't=', t, 'res=', res);
+					console.log('r=', r, 't=', t, 'res=', res);
 				}
 
 				if (t < range[i].min || t > range[i].max) {
@@ -576,17 +563,12 @@ var app = new Vue({
 					isexcept = true;
 				}
 
-				// 已知得数，求条件时，将条件换成空白
-				arr.push(op); // 运算符号
-				arr.push(('2' == this.rule && i == w) ? this.blank(t) : t);
-
 				// 计算得数
 				r = Math.floor(eval(r + op + t));
 			}
 
 			// 得数
 			arr.push('=');
-			arr.push((/*true ||*/'2' == this.rule) ? r : this.blank(r))
 
 			this.report.addcnt += '+' == op ? 1 : 0;
 			this.report.subcnt += '-' == op ? 1 : 0;
@@ -757,12 +739,12 @@ var app = new Vue({
 				inter_range = item_new_range;
 			}
 		
-// 			console.log(Array(item.index*4).fill('-').join('') + 'calcItemLORRange('+item.index+', '+item.lor+')：', '运算符：', item.operator, '，结果：', item.result, 
-// 				'，用户设置范围：', item_user_range.min+'~'+item_user_range.max, 
-// 				'，子层结果范围：', (child_result_range ? child_result_range.min+'~'+child_result_range.max : ''), 
-// 				'，新范围：', item_new_range.min+'~'+item_new_range.max, 
-// 				'，理论范围：', min+'~'+max, 
-// 				'，最终范围：', inter_range.min+'~'+inter_range.max);
+			console.log(Array(item.index*4).fill('-').join('') + 'calcItemLORRange('+item.index+', '+item.lor+')：', '运算符：', item.operator, '，结果：', item.result, 
+				'，用户设置范围：', item_user_range.min+'~'+item_user_range.max, 
+				'，子层结果范围：', (child_result_range ? child_result_range.min+'~'+child_result_range.max : ''), 
+				'，新范围：', item_new_range.min+'~'+item_new_range.max, 
+				'，理论范围：', min+'~'+max, 
+				'，最终范围：', inter_range.min+'~'+inter_range.max);
 
 			return inter_range;
 		},
@@ -810,12 +792,12 @@ var app = new Vue({
 				return {min:min - 0, max:max - 0};
 			} else {
 				var parent_lor = item.index > 0 ? items[item.index -1].lor : '';
-// 				console.log(Array(item.index*4).fill('-').join('') + 'calcItemResultRange('+item.index+', '+parent_lor+')：', '运算符：', item.operator, 
-// 					'，左值范围：', left_range.min+'~'+left_range.max, 
-// 					'，右值范围：', right_range.min+'~'+right_range.max, 
-// 					'，用户设置范围：', user_result_range.min+'~'+user_result_range.max, 
-// 					'，理论范围：', min+'~'+max,
-// 					'，最终范围：', inter_range.min+'~'+inter_range.max);
+				console.log(Array(item.index*4).fill('-').join('') + 'calcItemResultRange('+item.index+', '+parent_lor+')：', '运算符：', item.operator, 
+					'，左值范围：', left_range.min+'~'+left_range.max, 
+					'，右值范围：', right_range.min+'~'+right_range.max, 
+					'，用户设置范围：', user_result_range.min+'~'+user_result_range.max, 
+					'，理论范围：', min+'~'+max,
+					'，最终范围：', inter_range.min+'~'+inter_range.max);
 				return inter_range;
 			}
 		},
@@ -851,16 +833,6 @@ var app = new Vue({
 					}
 					ops = arr;
 				} 
-				// 相邻的运算符不相同
-				else if( this.diff_operator_adjacent ) {
-					var arr = [];
-					for(var i = 0; i < ops.length; i ++) {
-						if( prev_operator !=  ops[i] ) {
-							arr.push(ops[i]);
-						}
-					}
-					ops = arr;
-				}
 			}
 			if (ops.length < 1) return '+';
 			if (ops.length == 1) return ops[0];
@@ -915,9 +887,6 @@ var app = new Vue({
 				result = this.genItemLORByRange(items, parent, {min:min, max:max, genotinarr:genotinarr, notinarr:notinarr, inarr:inarr});
 			}
 
-// 			console.log(Array(item.index*4).fill('-').join('') + 'genItemResult('+item.index+', '+item.lor+')：', 
-// 				(item.lor=='lft'?'?':'X')+' '+item.operator+' '+(item.lor=='rgt'?'?':'X')+' = ',result, '('+result+'='+min+'~'+max+')');
-
 			return result;
 		},
 
@@ -931,9 +900,6 @@ var app = new Vue({
 			var val = this.genItemLORByRange(items, item, range);
 			if( isNaN(val) ) {
 				setError(Array(item.index*4).fill('-').join('') + 'genItemLOR error:', val, JSON.stringify(item));
-			} else {
-// 				console.log(Array(item.index*4).fill('-').join('') + 'genItemLOR('+item.index+', '+item.lor+')：',
-// 				 (item.lor=='lft'?val:'X')+' '+item.operator+' '+(item.lor=='rgt'?val:'X')+' = '+item.result, '('+val+'='+range.min+'~'+range.max+')');
 			}
 			return val;
 		},
@@ -1041,9 +1007,7 @@ var app = new Vue({
 		},
 
 		randomLOR: function () {
-			if( 'random' == this.strategy )
-				return randomInt(0, 1000) % 2 == 1 ? 'lft' : 'rgt';
-			return this.strategy;
+			return randomInt(0, 1000) % 2 == 1 ? 'lft' : 'rgt';	
 		},
 
 		/**
@@ -1114,17 +1078,13 @@ var app = new Vue({
 			}
 			items[index].lft = parseInt(item_lft);
 			items[index].rgt = parseInt(item_rgt);
-			// console.log(items[0]["left"])
 			
-// 			var ques = items[0]["lft"]+items[0].operator+items[0]["rgt"]+'='
-// 			console.log(ques,items[0]["result"])
-		
 			return items;
 		},
 
 		formulaToString: function(items) {
 			var str = '', head, tail, tmpstr, op;
-			var w = '' === this.whichcond ? randomInt(0, this.itemcount - 1) : this.whichcond - 0; // 已知得数，随机求某一个条件
+							
 			// 由内向外生成
 			for (var i = items.length - 1; i >= 0; i--) {
 				op = ChineseOP[items[i].operator];
@@ -1144,24 +1104,18 @@ var app = new Vue({
 					}
 				}
 				if (i == items.length - 1) {
-					if( '2' == this.rule && w == i + 1) tmpstr = items[i].lft + op + this.blank(items[i].rgt);
-					else if( '2' == this.rule && w == i + 0) tmpstr = this.blank(items[i].lft) + op + items[i].rgt;
-					else tmpstr = items[i].lft + op + items[i].rgt;
-					str = head + tmpstr + tail;
+				tmpstr = items[i].lft + op + items[i].rgt;
+				str = head + tmpstr + tail;
 				} else {
 					if ('lft' == items[i].lor) {
-						if( '2' == this.rule && w == i + 0) tmpstr = this.blank(items[i].rgt);
-						else tmpstr = items[i].rgt;
+						tmpstr = items[i].rgt; 
 						str = head + str + op + tmpstr + tail;
 					} else {
-						if( '2' == this.rule && w == i + 0) tmpstr = this.blank(items[i].lft);
-						else tmpstr = items[i].lft;
+						tmpstr = items[i].lft;
 						str = head + tmpstr + op + str + tail;
 					}
 				}
 			}
-			// 已知得数，求条件，且第一个数就是被求的条件? 则将该数使用空白代替！
-			str += '＝' + ( '1' == this.rule ? this.blank(items[0].result) : items[0].result);
 			return str;
 		},
 
@@ -1194,6 +1148,7 @@ var app = new Vue({
 				};
 				this.res.push(item);
 			}
+			
 			var swiftarray = []
 
 			for (let items of this.res) {
@@ -1212,10 +1167,6 @@ var app = new Vue({
 			//window.print();
 		},
 		
-
-		blank: function (v) {
-			return '___';
-		},
 		
 
 	}
